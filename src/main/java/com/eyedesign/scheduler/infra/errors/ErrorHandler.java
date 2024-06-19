@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorHandler {
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<?> handler404 () {
+    public ResponseEntity<?> handler401 () {
         return new ResponseEntity<String>("Email ou senha inválidos", HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(EmailInUseException.class)
-    public ResponseEntity<?> handler409 () {
-        return new ResponseEntity<String>("O email enviado já está em uso", HttpStatus.CONFLICT);
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> handler409 (Exception ex) {
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 }
