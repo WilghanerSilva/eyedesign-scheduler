@@ -8,6 +8,9 @@ import com.eyedesign.scheduler.repositories.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 public class TimeService {
 
@@ -22,5 +25,14 @@ public class TimeService {
         var createdTime = this.repository.save(newTime);
 
         return new TimeDetailsDTO(createdTime.getDescription(), createdTime.getId(), createdTime.getIsEnabled());
+    }
+
+    public List<TimeDetailsDTO> listEnabledTimes() {
+        List<Time> times = this.repository.findAll();
+
+        return times.stream()
+                .filter(Time::getIsEnabled)
+                .map(time -> {return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled());})
+                .toList();
     }
 }
