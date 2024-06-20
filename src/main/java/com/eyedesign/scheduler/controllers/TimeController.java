@@ -22,9 +22,16 @@ public class TimeController {
         return ResponseEntity.ok(createdTme);
     }
 
-    @GetMapping()
+    @GetMapping("/list-enabled")
     public ResponseEntity<List<TimeDetailsDTO>> listEnabledTimes() {
         List<TimeDetailsDTO> times = this.timeService.listEnabledTimes();
+
+        return ResponseEntity.ok(times);
+    }
+
+    @GetMapping("/list-all")
+    public ResponseEntity<List<TimeDetailsDTO>> listAll() {
+        List<TimeDetailsDTO> times = this.timeService.listAllTimes();
 
         return ResponseEntity.ok(times);
     }
@@ -34,5 +41,12 @@ public class TimeController {
         this.timeService.disableTime(id);
 
         return  ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteTime(@PathVariable String id) throws Exception{
+        this.timeService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

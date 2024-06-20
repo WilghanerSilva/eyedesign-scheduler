@@ -48,4 +48,24 @@ public class TimeService {
 
         this.repository.save(time);
     }
+
+    public List<TimeDetailsDTO> listAllTimes() {
+        List<Time> times = this.repository.findAll();
+
+        return times.stream()
+                .map(time -> {
+                    return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled());
+                }).toList();
+    }
+
+    public void delete(String id) throws Exception{
+        Optional<Time> optionalTime = this.repository.findById(id);
+
+        if(optionalTime.isEmpty())
+            throw new Exception("id inválido");
+
+        Time time = optionalTime.get();
+
+        this.repository.delete(time);
+    }
 }
