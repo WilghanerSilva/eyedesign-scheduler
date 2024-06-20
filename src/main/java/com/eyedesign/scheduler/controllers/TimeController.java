@@ -28,4 +28,11 @@ public class TimeController {
 
         return ResponseEntity.ok(times);
     }
+
+    @PostMapping("/disable/{id}")
+    public ResponseEntity<Void> disableTime(@PathVariable String id) throws Exception{
+        this.timeService.disableTime(id);
+
+        return  ResponseEntity.noContent().build();
+    }
 }

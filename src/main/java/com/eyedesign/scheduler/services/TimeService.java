@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TimeService {
@@ -34,5 +35,17 @@ public class TimeService {
                 .filter(Time::getIsEnabled)
                 .map(time -> {return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled());})
                 .toList();
+    }
+
+    public void disableTime(String id) throws Exception{
+        Optional<Time> optionalTime = this.repository.findById(id);
+
+        if(optionalTime.isEmpty())
+            throw new Exception("id inválido");
+
+        Time time = optionalTime.get();
+        time.setEnabled(false);
+
+        this.repository.save(time);
     }
 }
