@@ -1,6 +1,8 @@
 package com.eyedesign.scheduler.domain.user;
 
+import com.eyedesign.scheduler.domain.appointment.Appointment;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,11 +25,19 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
+    @NotNull
     private String email;
+    @NotNull
     private String firstname;
+    @NotNull
     private String lastname;
+    @NotNull
     private String password;
     private String phone;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private List<Appointment> appointments;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

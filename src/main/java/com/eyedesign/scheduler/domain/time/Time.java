@@ -1,9 +1,12 @@
 package com.eyedesign.scheduler.domain.time;
 
+import com.eyedesign.scheduler.domain.appointment.Appointment;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jdk.jfr.BooleanFlag;
 import lombok.*;
+
+import java.util.List;
 
 @Table(name = "time")
 @Entity(name = "time")
@@ -20,6 +23,9 @@ public class Time {
     boolean isEnabled;
     @NotNull
     String description;
+
+    @OneToMany(mappedBy = "time", orphanRemoval = true, cascade = CascadeType.REMOVE)
+    private List<Appointment> appointments;
 
     public boolean getIsEnabled(){
         return this.isEnabled;

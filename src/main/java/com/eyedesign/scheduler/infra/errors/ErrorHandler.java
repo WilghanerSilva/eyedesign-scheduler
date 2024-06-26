@@ -17,4 +17,9 @@ public class ErrorHandler {
     public ResponseEntity<?> handler409(Exception ex) {
         return new ResponseEntity<String>(ex.getMessage(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<?> handle400(Exception ex){
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

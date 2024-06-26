@@ -33,14 +33,17 @@ public class SecurityFilter  extends OncePerRequestFilter {
             UserDetails user = this.userRepository.findByEmail(email);
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            request.setAttribute("email", email);
         }
 
         filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request) {
-        var authRHeader = request.getHeader("Authorization");
-        if(authRHeader == null) return null;
-        return authRHeader.replace("Bearer ", "");
+        var authHeader = request.getHeader("Authorization");
+        if(authHeader == null) return null;
+
+        return authHeader.replace("Bearer ", "");
     }
 }
