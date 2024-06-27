@@ -60,4 +60,24 @@ public class AppointmentService {
         );
     }
 
+    public AppointmentDetailDTO confirmAppointment(String id) {
+        Optional<Appointment> optionalAppointment = this.appointmentRepository.findById(id);
+
+        if(optionalAppointment.isEmpty())
+            throw new InvalidDataException("Agendamento inválido");
+
+        Appointment appointment = optionalAppointment.get();
+
+        appointment.setConfirmed(true);
+
+        this.appointmentRepository.save(appointment);
+
+        return new AppointmentDetailDTO(
+                appointment.getId(),
+                appointment.getUser().getId(),
+                appointment.getTime().getId(),
+                appointment.getDate(),
+                appointment.isConfirmed()
+        );
+    }
 }

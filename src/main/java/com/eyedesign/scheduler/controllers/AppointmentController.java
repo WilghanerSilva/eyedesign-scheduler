@@ -9,10 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -30,5 +27,12 @@ public class AppointmentController {
         CreateAppointmentDTO createData = new CreateAppointmentDTO(parseDate,false, userEmail, data.timeID());
 
         return ResponseEntity.ok(this.service.createAppointment(createData));
+    }
+
+    @PostMapping("/confirm/{id}")
+    public ResponseEntity<AppointmentDetailDTO> confirmAppointment(@PathVariable String id) throws Exception{
+        return ResponseEntity.ok(
+                this.service.confirmAppointment(id)
+        );
     }
 }

@@ -34,7 +34,7 @@ public class AuthenticationController {
         var createdUser = this.service.createUser(data);
         return ResponseEntity.ok(createdUser);
     }
-    ;
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid AuthenticationDTO data) {
 
