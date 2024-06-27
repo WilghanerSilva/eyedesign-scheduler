@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -79,5 +80,17 @@ public class AppointmentService {
                 appointment.getDate(),
                 appointment.isConfirmed()
         );
+    }
+
+    public List<AppointmentDetailDTO> listAll() {
+        List<Appointment> appointments = this.appointmentRepository.findAll();
+
+        return appointments.stream().map(appointment -> new AppointmentDetailDTO(
+                appointment.getId(),
+                appointment.getUser().getId(),
+                appointment.getTime().getId(),
+                appointment.getDate(),
+                appointment.isConfirmed()
+        )).toList();
     }
 }

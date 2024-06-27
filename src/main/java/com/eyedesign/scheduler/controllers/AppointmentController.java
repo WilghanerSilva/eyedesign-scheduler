@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("appointment")
@@ -35,4 +36,9 @@ public class AppointmentController {
                 this.service.confirmAppointment(id)
         );
     }
+
+    @GetMapping("/list-all")
+    public ResponseEntity<List<AppointmentDetailDTO>> listAllAppointments(){
+        return ResponseEntity.ok(this.service.listAll());
+     }
 }
