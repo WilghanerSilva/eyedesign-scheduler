@@ -93,4 +93,22 @@ public class AppointmentService {
                 appointment.isConfirmed()
         )).toList();
     }
+
+    public List<AppointmentDetailDTO> ListByUser(String userEmail) throws InvalidDataException{
+        User user = (User) this.userRepository.findByEmail(userEmail);
+
+        if(user == null)
+            throw new InvalidDataException("O usuário informado não existe");
+
+        List<Appointment> appointments = this.appointmentRepository.findByUser(user.getId());
+
+        return appointments.stream().map(appointment -> new AppointmentDetailDTO(
+                appointment.getId(),
+                appointment.getUser().getId(),
+                appointment.getTime().getId(),
+                appointment.getDate(),
+                appointment.isConfirmed()
+        )).toList();
+
+    }
 }

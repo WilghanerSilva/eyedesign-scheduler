@@ -41,4 +41,11 @@ public class AppointmentController {
     public ResponseEntity<List<AppointmentDetailDTO>> listAllAppointments(){
         return ResponseEntity.ok(this.service.listAll());
      }
+
+     @GetMapping("/list-by-user")
+    public ResponseEntity<List<AppointmentDetailDTO>> listByUser(HttpServletRequest request) throws Exception{
+        String email =(String) request.getAttribute("email");
+
+        return ResponseEntity.ok(this.service.ListByUser(email));
+     }
 }
