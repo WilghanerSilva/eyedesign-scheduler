@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jdk.jfr.BooleanFlag;
 import lombok.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Table(name = "time")
@@ -23,6 +24,9 @@ public class Time {
     boolean isEnabled;
     @NotNull
     String description;
+    @NotNull
+    @Column(name = "time_data")
+    LocalTime timeData;
 
     @OneToMany(mappedBy = "time", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<Appointment> appointments;
@@ -31,8 +35,9 @@ public class Time {
         return this.isEnabled;
     }
 
-    public Time(String description, boolean isEnabled){
+    public Time(String description, LocalTime timeData, boolean isEnabled){
         this.description = description;
         this.isEnabled = isEnabled;
+        this.timeData = timeData;
     }
 }

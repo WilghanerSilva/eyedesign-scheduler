@@ -4,11 +4,11 @@ import com.eyedesign.scheduler.domain.time.CreateTimeDTO;
 import com.eyedesign.scheduler.domain.time.Time;
 import com.eyedesign.scheduler.domain.time.TimeDetailsDTO;
 import com.eyedesign.scheduler.infra.errors.ConflictException;
+import com.eyedesign.scheduler.infra.errors.InvalidDataException;
 import com.eyedesign.scheduler.repositories.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +22,11 @@ public class TimeService {
         if(this.repository.findByDescription(data.description()).isPresent())
             throw new ConflictException("O horário já existe");
 
-        Time newTime = new Time(data.description(), true);
+        Time newTime = new Time(data.description(), data.timeData(), true);
         var createdTime = this.repository.save(newTime);
 
-        return new TimeDetailsDTO(createdTime.getDescription(), createdTime.getId(), createdTime.getIsEnabled());
+
+        return new TimeDetailsDTO(createdTime.getDescription(), createdTime.getId(), createdTime.getIsEnabled(), createdTime.getTimeData());
     }
 
     public List<TimeDetailsDTO> listEnabledTimes() {
@@ -33,18 +34,30 @@ public class TimeService {
 
         return times.stream()
                 .filter(Time::getIsEnabled)
-                .map(time -> {return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled());})
+                .map(time -> {return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled(), time.getTimeData());})
                 .toList();
     }
 
-    public void disableTime(String id) throws Exception{
+    public void disableTime(String id) throws InvalidDataException{
         Optional<Time> optionalTime = this.repository.findById(id);
 
         if(optionalTime.isEmpty())
-            throw new Exception("id inválido");
+            throw new InvalidDataException("id inválido");
 
         Time time = optionalTime.get();
         time.setEnabled(false);
+
+        this.repository.save(time);
+    }
+
+    public void enableTime(String id) throws InvalidDataException{
+        Optional<Time> optionalTime = this.repository.findById(id);
+
+        if(optionalTime.isEmpty())
+            throw new InvalidDataException("O id fornecido é inválido");
+
+        Time time = optionalTime.get();
+        time.setEnabled(true);
 
         this.repository.save(time);
     }
@@ -54,7 +67,7 @@ public class TimeService {
 
         return times.stream()
                 .map(time -> {
-                    return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled());
+                    return new TimeDetailsDTO(time.getDescription(), time.getId(), time.getIsEnabled(), time.getTimeData());
                 }).toList();
     }
 
