@@ -28,6 +28,7 @@ public class AppointmentService {
     @Autowired
     private UserRepository userRepository;
 
+
     public AppointmentDetailDTO createAppointment(CreateAppointmentDTO data) throws ConflictException, InvalidDataException {
         Appointment appointment = this.appointmentRepository.findByDateAndTime(data.timeID(), data.date());
 
@@ -57,7 +58,8 @@ public class AppointmentService {
                 user.getId(),
                 time.getId(),
                 newAppointment.getDate(),
-                newAppointment.isConfirmed()
+                newAppointment.isConfirmed(),
+                newAppointment.isReminderSent()
         );
     }
 
@@ -78,7 +80,8 @@ public class AppointmentService {
                 appointment.getUser().getId(),
                 appointment.getTime().getId(),
                 appointment.getDate(),
-                appointment.isConfirmed()
+                appointment.isConfirmed(),
+                appointment.isReminderSent()
         );
     }
 
@@ -90,7 +93,8 @@ public class AppointmentService {
                 appointment.getUser().getId(),
                 appointment.getTime().getId(),
                 appointment.getDate(),
-                appointment.isConfirmed()
+                appointment.isConfirmed(),
+                appointment.isReminderSent()
         )).toList();
     }
 
@@ -107,7 +111,8 @@ public class AppointmentService {
                 appointment.getUser().getId(),
                 appointment.getTime().getId(),
                 appointment.getDate(),
-                appointment.isConfirmed()
+                appointment.isConfirmed(),
+                appointment.isReminderSent()
         )).toList();
 
     }

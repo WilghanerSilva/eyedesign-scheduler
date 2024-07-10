@@ -30,6 +30,9 @@ public class Appointment {
     @JoinColumn(name="timeID", nullable = false)
     private Time time;
 
+    @Column(name="reminder_sent")
+    private boolean reminderSent;
+
     public Appointment(LocalDate date, boolean confirmed, Time time, User user){
         this.date = date;
         this.confirmed = confirmed;

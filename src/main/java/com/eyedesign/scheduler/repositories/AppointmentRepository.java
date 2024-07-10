@@ -21,4 +21,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
             "WHERE appointment.userID = :userID and " +
             "appointment.confirmed = 1", nativeQuery = true)
     List<Appointment> findByUser(@Param("userID")String userID);
+
+    @Query(value = "SELECT appointment.* FROM appointment " +
+            "JOIN time ON time.id = appointment.timeID " +
+            "WHERE time_data BETWEEN CURTIME() AND ADDTIME(CURTIME(), '01:00:00') " +
+            "AND day_date = CURDATE() " +
+            "AND reminder_sent = 0 " +
+            "AND confirmed = 1", nativeQuery = true)
+    List<Appointment> findAppointmentsWithNextHour();
 }

@@ -25,7 +25,7 @@ public class AppointmentController {
         String userEmail = (String) request.getAttribute("email");
         LocalDate parseDate = LocalDate.parse(data.date());
 
-        CreateAppointmentDTO createData = new CreateAppointmentDTO(parseDate,false, userEmail, data.timeID());
+        CreateAppointmentDTO createData = new CreateAppointmentDTO(parseDate,false, false, userEmail, data.timeID());
 
         return ResponseEntity.ok(this.service.createAppointment(createData));
     }

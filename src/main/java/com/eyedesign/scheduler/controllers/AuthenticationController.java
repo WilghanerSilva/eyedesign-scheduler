@@ -5,6 +5,7 @@ import com.eyedesign.scheduler.domain.user.RegisterDTO;
 import com.eyedesign.scheduler.domain.user.ReturnUserDTO;
 import com.eyedesign.scheduler.domain.user.User;
 import com.eyedesign.scheduler.infra.security.TokenService;
+import com.eyedesign.scheduler.services.EmailService;
 import com.eyedesign.scheduler.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,6 @@ public class AuthenticationController {
 
     @Autowired
     private UserService service;
-
 
     @PostMapping("/register")
     public ResponseEntity<ReturnUserDTO> register(@RequestBody @Valid RegisterDTO data) throws Exception {
